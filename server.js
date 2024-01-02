@@ -20,7 +20,10 @@ app.use('/api/playlist',playlistRoutes);
 app.use('/api', userRoutes);
 app.use('/images', imageRoutes);
 app.use('/api',likeRoutes);
-
+app.get('/', (req, res) => {
+    res.send('<h1>Welcome to the Music API Server!</h1>');
+  });
+  
 app.listen(port, ()=>{
     console.log(`Running on port ${port}`)
 })

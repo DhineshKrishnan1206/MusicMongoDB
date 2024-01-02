@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
   profileImage: {
     type: String,
   },
+  authToken: {
+    type: String,
+  },
 });
 
 const User = mongoose.model('User', userSchema);
