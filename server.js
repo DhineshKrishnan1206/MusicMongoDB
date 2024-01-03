@@ -50,3 +50,13 @@ httpServer.listen(portHTTP, () => {
 httpsServer.listen(portHTTPS, () => {
     console.log(`Running on port ${portHTTPS} (HTTPS)`);
 });
+const dummyRequestInterval = 14 * 60 * 1000; // 14 minutes in milliseconds
+setInterval(() => {
+    // You can make a dummy request here to any endpoint of your API
+    // For example, making a request to the root endpoint
+    http.get(`http://localhost:${portHTTP}`, (res) => {
+        console.log(`Dummy request sent at ${new Date()}`);
+    }).on('error', (err) => {
+        console.error(`Error sending dummy request: ${err.message}`);
+    });
+}, dummyRequestInterval);
