@@ -35,7 +35,13 @@ router.post('/users', upload.single('profileImage'), async (req, res) => {
     const { username, email, password,profileImage } = req.body;
     const newUser = await User.create({ username, email, password, profileImage });
     
-    return res.status(201).json({ status: true, userId: newUser._id });
+    const token = jwt.sign({ userId: newUser._id }, 'Gf9$2!eKoPq6R#uA8lCpYz3Xt5Vb*1^7', { expiresIn: '7d' });
+
+    // Store the token in the user's authToken field
+    newUser.authToken = token;
+    await newUser.save();
+
+    return res.status(201).json({ status: true, userId: newUser._id, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ status: false, message: 'Internal Server Error' });
