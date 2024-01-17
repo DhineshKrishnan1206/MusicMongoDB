@@ -2,6 +2,10 @@
 const mongoose = require('mongoose');
 
 const playlistSchema = new mongoose.Schema({
+  userId:{
+    type:String,
+    required:true
+  },
   name: {
     type: String,
     required: true,
@@ -17,7 +21,10 @@ const playlistSchema = new mongoose.Schema({
     }]
 
 });
-
+playlistSchema.methods.addSong = function (songData) {
+  this.songs.push(songData);
+  return this.save();
+};
 const playlist = mongoose.model('playlist', playlistSchema);
 
 module.exports = playlist;

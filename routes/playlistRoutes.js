@@ -4,23 +4,40 @@ const Playlist = require('../models/Playlist');
 
 router.post('/create',async(req,res)=>{
     try {
-        const {name,image} = req.body;
-        const newPlaylist = await Playlist.create({name,image});
+        const {userId,name,image} = req.body;
+        const newPlaylist = await Playlist.create({userId,name,image});
         return res.status(201).json({ status: true});
     } catch (error) {
         console.log(error);
     }
 });
-router.get('/get', async (req, res) => {
+router.post('/get', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const playlists = await Playlist.find({ userId });
+    res.status(200).json({ status: true, playlists });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: false, error: 'Internal Server Error' });
+  }
+});
+  router.post('/addSong', async (req, res) => {
     try {
-      const playlists = await Playlist.find();
-      res.status(200).json({ status: true, playlists });
+      const { playlistId, songData } = req.body;
+  
+      const playlist = await Playlist.findById(playlistId);
+  
+      if (playlist) {
+        await playlist.addSong(songData);
+        res.status(200).json({ status: true });
+      } else {
+        res.status(404).json({ status: false, error: 'Playlist not found' });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ status: false, error: 'Internal Server Error' });
     }
   });
-
 
 
 module.exports = router;
