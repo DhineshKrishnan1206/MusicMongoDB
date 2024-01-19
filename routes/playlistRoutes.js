@@ -21,6 +21,29 @@ router.post('/get', async (req, res) => {
     res.status(500).json({ status: false, error: 'Internal Server Error' });
   }
 });
+router.post('/getByPlaylistId', async (req, res) => {
+  try {
+    const { playlistId } = req.body;
+
+    // Validate if playlistId is provided
+    if (!playlistId) {
+      return res.status(400).json({ status: false, error: 'Playlist ID is required' });
+    }
+
+    // Find the playlist by ID
+    const playlist = await Playlist.findById(playlistId);
+
+    // Check if playlist with the provided ID exists
+    if (playlist) {
+      res.status(200).json({ status: true, playlist });
+    } else {
+      res.status(404).json({ status: false, error: 'Playlist not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: false, error: 'Internal Server Error' });
+  }
+});
   router.post('/addSong', async (req, res) => {
     try {
       const { playlistId, songData } = req.body;
