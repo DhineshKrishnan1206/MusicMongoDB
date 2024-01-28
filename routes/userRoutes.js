@@ -35,7 +35,7 @@ router.post('/users', upload.single('profileImage'), async (req, res) => {
     const { username, email, password,profileImage } = req.body;
     const newUser = await User.create({ username, email, password, profileImage });
     
-    const token = jwt.sign({ userId: newUser._id }, 'Gf9$2!eKoPq6R#uA8lCpYz3Xt5Vb*1^7', { expiresIn: '7d' });
+    const token = jwt.sign({ userId: newUser._id }, 'Gf9$2!eKoPq6R#uA8lCpYz3Xt5Vb*1^7', { expiresIn: null });
 
     // Store the token in the user's authToken field
     newUser.authToken = token;
